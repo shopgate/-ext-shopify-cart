@@ -45,7 +45,7 @@ window.SGPipelineScript.login_register = function () {
  */
 window.SGPipelineScript.attachSubmitListener = function (formId) {
   if (document.getElementById(formId)) {
-    document.getElementById(formId).querySelector('input[type="submit"]').onclick = function () {
+    document.getElementById(formId).querySelector('[type="submit"]').onclick = function () {
       return window.SGPipelineScript.initAppLogin(formId)
     }
   }

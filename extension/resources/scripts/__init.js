@@ -15,6 +15,15 @@ window.SGPipelineScript.STORAGE_KEY_TAB_PARAMS = 'shopgateParams'
 window.SGPipelineScript.STORAGE_KEY_CHECKOUT_URL = 'shopifyCheckoutUrl'
 window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY = 'shopgatePageHistory'
 window.SGPipelineScript.STORAGE_KEY_LOADING_SCREEN_ENABLED = 'shopgateAppLoadingScreenEnabled'
+
+/**
+ * #############################################################################
+ *
+ * ### IMPORTANT: THIS SCRIPT WILL BE CACHED FOR 30MIN BY THE SGAppConnector ###
+ *
+ * #############################################################################
+ */
+
 /**
  * Pipeline entry function.
  *
@@ -22,6 +31,10 @@ window.SGPipelineScript.STORAGE_KEY_LOADING_SCREEN_ENABLED = 'shopgateAppLoading
  * It also does some minor initialization.
  */
 window.SGPipelineScript.__init = function () {
+  var VERSION_ACCOUNT = 'v1'
+  var VERSION_CART = 'v1'
+  var VERSION_CHALLANGE = 'v1'
+  var VERSION_LOGIN_REGISTER = 'v1'
   // set up page history
   if (JSON.parse(window.localStorage.getItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY)) === null) {
     window.localStorage.setItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY, '[]')
@@ -39,13 +52,13 @@ window.SGPipelineScript.__init = function () {
 
       // clear previously stored temporary credentials to avoid conflicts later and forward to page specific script
       window.localStorage.removeItem(this.STORAGE_KEY_WEBLOGIN_PAYLOAD)
-      window.SGAppConnector.loadPipelineScript('login_register')
+      window.SGAppConnector.loadPipelineScript('login_register', VERSION_LOGIN_REGISTER)
       // leave loading spinner open because the script is not finished, yet
       break
     }
     case this.PAGE_ACCOUNT: {
       // load page specific script
-      window.SGAppConnector.loadPipelineScript('account')
+      window.SGAppConnector.loadPipelineScript('account', null, VERSION_ACCOUNT)
       const history = JSON.parse(window.localStorage.getItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY))
       history.push('account')
       window.localStorage.setItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY, JSON.stringify(history))
@@ -54,7 +67,7 @@ window.SGPipelineScript.__init = function () {
     }
     case this.PAGE_CHALLENGE: {
       // load page specific script
-      window.SGAppConnector.loadPipelineScript('challenge')
+      window.SGAppConnector.loadPipelineScript('challenge', null, VERSION_CHALLANGE)
       const history = JSON.parse(window.localStorage.getItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY))
       history.push('challenge')
       window.localStorage.setItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY, JSON.stringify(history))
@@ -65,7 +78,7 @@ window.SGPipelineScript.__init = function () {
       const history = JSON.parse(window.localStorage.getItem(window.SGPipelineScript.STORAGE_KEY_PAGE_HISTORY))
       if (history.join(',').match(/register(,challenge)*$/)) {
         history.length = 0 // clear history
-        window.SGAppConnector.loadPipelineScript('account')
+        window.SGAppConnector.loadPipelineScript('account', null, VERSION_ACCOUNT)
         break
       }
 

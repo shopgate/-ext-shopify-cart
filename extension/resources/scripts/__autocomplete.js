@@ -80,16 +80,18 @@ if (!window.SGAppConnector) {
      *
      * @param {string} key
      * @param {string} scriptCode
+     * @param {string} version
      */
-    saveScriptToCache: function (key, scriptCode) {},
+    saveScriptToCache: function (key, scriptCode, version) {},
 
     /**
      * Tries to load a script from the localStorage.
      *
      * @param {string} key
+     * @param {string} version
      * @return {string} Returns an empty string if nothing is available in the cache.
      */
-    getScriptFromCache: function (key) {},
+    getScriptFromCache: function (key, version) {},
 
     /**
      * Loads a script file from a given url and injects it into the current page.
@@ -105,7 +107,7 @@ if (!window.SGAppConnector) {
      * @param {string} scriptName
      * @param {*|null} passthroughParams Parameters to be passed to the pipelines entry function
      */
-    loadPipelineScript: function (scriptName, passthroughParams = null) {}
+    loadPipelineScript: function (scriptName, passthroughParams = null, version) {}
 
   }
 }
